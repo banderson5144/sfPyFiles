@@ -22,7 +22,7 @@ client._default_soapheaders ={'SessionHeader':{"sessionId" : sessionId}}
 clientService = client.create_service( '{urn:partner.soap.sforce.com}SoapBinding', serverUrl)
 
 #Query the ContentVersion Ids first
-query_result = clientService.query("Select Id FROM ContentVersion")
+query_result = clientService.query("Select Id FROM ContentVersion ORDER BY ContentSize ASC")
 
 # print(query_result.body.result.records[0]['Id'])
 
