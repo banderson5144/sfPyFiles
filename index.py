@@ -16,13 +16,14 @@ sessionId = '00DXXXXXXXXXXXXXXXXXXX'
 # Set the Server URL by whatever means
 serverUrl = 'https://{yourMyDomain}.my.salesforce.com/services/Soap/u/52.0'
 
-# Assign Session Id to the SOAP Header Envelop
-client._default_soapheaders ={'SessionHeader':{"sessionId" : sessionId}} 
+# Assign Session Id to the SOAP Header Envelop, also added batch size to query from Salesforce
+client._default_soapheaders ={'SessionHeader':{"sessionId" : sessionId},'QueryOptions':{"batchSize" : 200}} 
 
 # Create Salesforce Service from WSDL
 clientService = client.create_service( '{urn:partner.soap.sforce.com}SoapBinding', serverUrl)
 
 #Initial Query from Salesforce
+print('Initial Query')
 query_result = clientService.query("Select Id,ContentSize FROM ContentVersion ORDER BY ContentSize ASC")
 
 currRecSet = query_result.body.result.records
@@ -67,12 +68,16 @@ def retrieveFiles():
             except Exception as e:
                 print(str(e))
 
-            if(len(currRecSet)>0):
-                cvIds = []
-                cvSize = 0
-                loopThroughSet()
+    cvIds = []
+    cvSize = 0
+
+    if(len(currRecSet)>0):
+        loopThroughSet()
+    elif(currQryDone is False):
+        sfQryMore()
 
 def sfQryMore():
+    print('Query more Ids')
     global query_result
     global currQryLoc
     global currQryDone
