@@ -1,3 +1,5 @@
+(This repo was created on July 19th, 2021. I had to overwrite history because of sensitive information committed by accident)
+
 This is a python code sample showing how to retrieve binary files from Salesforce in Bulk.
 
 Currently when you issue a `query` API call and the SOQL statement contains a Base64 field (i.e. `VersionData` on `ContentVersion`), you can only retrieve one record at a time. This means if you want to retrieve 20 files from Salesfeorce, you will need 20 API calls.
